@@ -1,9 +1,9 @@
 /* Filename: Spread.xs
  * Author:   Theo Schlossnagle <jesus@cnds.jhu.edu>
  * Created:  12th October 1999
- * Version:  1.0312
+ * Version:  1.0313
  *
- * Copyright (c) 1999 Theo Schlossnagle. All rights reserved.
+ * Copyright (c) 1999-2001 Theo Schlossnagle. All rights reserved.
  *   This program is free software; you can redistribute it and/or
  *   modify it under the same terms as Perl itself.
  *
@@ -690,13 +690,13 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
 		if(ret==BUFFER_TOO_SHORT) {
 		  /* Lets double it, so this won't happen again */
 		  newmsize=-endmis;
-		  ERROR = sv_2mortal(newSViv(BUFFER_TOO_SHORT));
+		  ERROR = newSViv(BUFFER_TOO_SHORT);
 		  msize = oldmsize;
 		  goto try_again;
 #ifdef GROUPS_TOO_SHORT
 		} else if (ret==GROUPS_TOO_SHORT) {
 		  newgsize=--ngrps;
-		  ERROR = sv_2mortal(newSViv(GROUPS_TOO_SHORT));
+		  ERROR = newSViv(GROUPS_TOO_SHORT);
 		  ngrps = oldgsize;
 		  goto try_again;
 #endif
@@ -712,11 +712,11 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
 		newgsize*=2;
 	    if(ngrps<0) ngrps=oldgsize;	
    	    if(ngrps>0) {
-	      GROUPS = newAV();
+	      GROUPS = (AV *)sv_2mortal((SV *)newAV());
 	      for(i=0;i<ngrps;i++)
-		av_push(GROUPS, sv_2mortal(newSVpv(&groups[i*MAX_GROUP_NAME],
+		av_push(GROUPS, newSVpv(&groups[i*MAX_GROUP_NAME],
 		                     MIN(strlen(&groups[i*MAX_GROUP_NAME]),
-			                 MAX_GROUP_NAME))));
+			                 MAX_GROUP_NAME)));
 	    }
 	    SENDER=sv_2mortal(newSVpv(sender, 0));
 	    STYPE=sv_2mortal(newSViv(stype));
@@ -728,7 +728,7 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
           EXTEND(SP, 6);
           PUSHs(STYPE);
 	  PUSHs(SENDER);
-	  PUSHs (sv_2mortal(newRV((SV *)GROUPS)));
+	  PUSHs(sv_2mortal(newRV((SV *)GROUPS)));
 	  PUSHs(MTYPE);
 	  PUSHs(ENDMIS);
           PUSHs(MESSAGE);
