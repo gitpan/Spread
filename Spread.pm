@@ -1,9 +1,9 @@
 # Filename: Spread.pm
 # Author:   Theo Schlossnagle <jesus@cnds.jhu.edu>
 # Created:  12th October 1999
-# Version:  1.0313
+# Version:  1.03152
 #
-# Copyright (c) 1999-2001 Theo Schlossnagle. All rights reserved.
+# Copyright (c) 1999 Theo Schlossnagle. All rights reserved.
 #   This program is free software; you can redistribute it and/or
 #   modify it under the same terms as Perl itself.
 #
@@ -20,7 +20,7 @@ use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $AUTOLOAD);
 
-$VERSION = "1.03" ;
+$VERSION = "1.02" ;
 
 *SP_connect = \&Spread::connect;
 *SP_disconnect = \&Spread::disconnect;
@@ -62,6 +62,7 @@ $VERSION = "1.03" ;
 			      ILLEGAL_SPREAD
 			      CONNECTION_CLOSED
 			      COULD_NOT_CONNECT
+			      MESSAGE_TOO_LONG
 			      BUFFER_TOO_SHORT
 			      GROUPS_TOO_SHORT
 			      REJECT_ILLEGAL_NAME
@@ -111,6 +112,7 @@ $VERSION = "1.03" ;
 	     COULD_NOT_CONNECT
 	     BUFFER_TOO_SHORT
 	     GROUPS_TOO_SHORT
+	     MESSAGE_TOO_LONG
 	     REJECT_ILLEGAL_NAME
 	     REJECT_NOT_UNIQUE
 	     REJECT_NO_NAME

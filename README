@@ -1,11 +1,11 @@
-Spread-3.14 Version 1.03
-========================
+Spread-3.15.2 Version 1.03
+=====================
 
 DESCRIPTION
 -----------
 
-Spread-3.14-1.03 is a Perl module that conveniently wraps the Spread C libraries
-provided with the Spread 3.14 distribution.  Spread is available at
+Spread-3.15.2-1.03 is a Perl module that conveniently wraps the Spread C
+libraries provided with the Spread 3.15.2 distribution.  Spread is available at
 http://www.spread.org/.  Spread is a local/wide area group communication
 toolkit that runs on most modern operating systems.  It allows convenient
 mechanisms for reliable multicasting information between applications as well
@@ -13,14 +13,22 @@ as providing many more complicate assurances.
 
 CHANGES
 -------
+
+Version 3.15.2-1.03 updgrades the xs code to use the 3.15.2 Spread client
+libraries.
+
 Version 3.14-1.03 fixes a long standing mortilzation bug that caused an abusive
-memory leak on systesm with many message.  The leak was in SP_receive.
+memory leak on systesm with many message.  The leak was in SP_receive. It also
+adds this "changes" section.
 
 PREREQUISITES
 -------------
 
-Spread-3.14-1.03 requires the Spread group communication toolkit daemon and
+Spread-3.15.2-1.03 requires the Spread group communication toolkit daemon and
 client C libraries (with headers) to be installed (or compiled) on the system.
+
+It will often not work correctly if there is an older libsp installed on the
+system.
 
 It also request Perl 5.
 
@@ -35,7 +43,7 @@ INSTALLATION
 COPYRIGHT AND DISCLAIMER
 ------------------------
 
-Copyright (c) 2000 Theo Schlossnagle <jesus@cnds.jhu.edu>
+Copyright (c) 2000,2001 Theo Schlossnagle <jesus@cnds.jhu.edu>
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

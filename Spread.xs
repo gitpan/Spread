@@ -1,9 +1,9 @@
 /* Filename: Spread.xs
  * Author:   Theo Schlossnagle <jesus@cnds.jhu.edu>
  * Created:  12th October 1999
- * Version:  1.0313
+ * Version:  1.03152
  *
- * Copyright (c) 1999-2001 Theo Schlossnagle. All rights reserved.
+ * Copyright (c) 1999 Theo Schlossnagle. All rights reserved.
  *   This program is free software; you can redistribute it and/or
  *   modify it under the same terms as Perl itself.
  *
@@ -13,7 +13,7 @@
 #include "perl.h"
 #include "XSUB.h"
 
-#include <sp.h>
+#include "sp.h"
 
 #ifndef MIN
 #define MIN(a,b) (((a)<(b))?(a):(b))
@@ -61,6 +61,11 @@ static char *my_e_errmsg[] = {
  "Buffer Too Short",	/* BUFFER_TOO_SHORT		-15 */
 #ifdef GROUP_TOO_SHORT
  "Groups Too Short",	/* GROUPS_TOO_SHORT		-16 */
+#endif
+#ifdef MESSAGE_TOO_LONG
+ "Message Too Long",	/* MESSAGE_TOO_LONG		-17 */
+#else
+#error You must install spread 3.15.2 client libraries to build perl Spread.
 #endif
  ""};
 static char *connect_params[] = {
@@ -232,6 +237,7 @@ int arg;
             goto not_there;
 #endif
         break;
+    case 'M':
         if (strEQ(name, "MAX_SCATTER_ELEMENTS"))
 #ifdef MAX_SCATTER_ELEMENTS
             return MAX_SCATTER_ELEMENTS;
@@ -247,6 +253,12 @@ int arg;
         if (strEQ(name, "MEMBERSHIP_MESS"))
 #ifdef MEMBERSHIP_MESS
             return MEMBERSHIP_MESS;
+#else
+            goto not_there;
+#endif
+        if (strEQ(name, "MESSAGE_TOO_LONG"))
+#ifdef MESSAGE_TOO_LONG
+            return MESSAGE_TOO_LONG;
 #else
             goto not_there;
 #endif
@@ -426,8 +438,13 @@ int error_no ;
 }
 static char *
 SPversionstr() {
-  static char version_string[5];
-  sprintf(version_string, "%0.2f", SP_version());
+  static char version_string[60];
+  int major, minor, patch;
+  if(SP_version(&major, &minor, &patch) > 0) {
+    sprintf(version_string, "%d.%d.%d", major, minor, patch);
+  } else {
+    sprintf(version_string, "SP_version failed, could not retrieve version.");
+  }
   return version_string;
 }
 
@@ -438,7 +455,11 @@ PROTOTYPES:	DISABLE
 
 BOOT:
 	/* Check version of Spread == 3.11 */
-	if(SP_version() < 3.119)
+	{
+        int major, minor, patch;
+	if(SP_version(&major, &minor, &patch) <= 0 ||
+	   major<3 || (major==3 && minor<15) ||
+	   (major==3 && minor==15 && patch<1))
 	  croak(SPversionstr()) ; 
 
 	{
@@ -446,6 +467,7 @@ BOOT:
 	  sv_setiv(sperror_sv, 0) ;
 	  sv_setpv(sperror_sv, "") ;
 	  SvIOK_on(sperror_sv) ;
+	}
 	}
 	sv_NULL = newSVpv("", 0) ;
 
@@ -728,7 +750,7 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
           EXTEND(SP, 6);
           PUSHs(STYPE);
 	  PUSHs(SENDER);
-	  PUSHs(sv_2mortal(newRV((SV *)GROUPS)));
+	  PUSHs (sv_2mortal(newRV((SV *)GROUPS)));
 	  PUSHs(MTYPE);
 	  PUSHs(ENDMIS);
           PUSHs(MESSAGE);

@@ -2,8 +2,8 @@ require 5.004 ;
 use ExtUtils::MakeMaker 5.16 ;
 use Config ;
 
-$SPLIB_LIB = '-L../.. -L/usr/local/lib' ;
-$SPLIB_INCLUDE = '-I ../.. -I /usr/local/include' ;
+$SPLIB_LIB = '-L../.. -L../spread-src-3.15.2/' ;
+$SPLIB_INCLUDE = '-I ../.. -I ../spread-src-3.15.2/' ;
 
 WriteMakefile(
 	NAME		=> 'Spread',
