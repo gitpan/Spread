@@ -1,9 +1,8 @@
 # Filename: Spread.pm
 # Author:   Theo Schlossnagle <jesus@cnds.jhu.edu>
 # Created:  12th October 1999
-# Version:  1.03152
 #
-# Copyright (c) 1999 Theo Schlossnagle. All rights reserved.
+# Copyright (c) 1999-2003 Theo Schlossnagle. All rights reserved.
 #   This program is free software; you can redistribute it and/or
 #   modify it under the same terms as Perl itself.
 #
@@ -20,7 +19,7 @@ use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $AUTOLOAD);
 
-$VERSION = "1.02" ;
+$VERSION = "3.17.1-1.05" ;
 
 *SP_connect = \&Spread::connect;
 *SP_disconnect = \&Spread::disconnect;
@@ -38,7 +37,7 @@ $VERSION = "1.02" ;
 		MESS => [ qw(UNRELIABLE_MESS
 			     RELIABLE_MESS
 			     FIFO_MESS
-			     CASUAL_MESS
+			     CAUSAL_MESS
 			     AGREED_MESS
 			     SAFE_MESS
 			     REGULAR_MESS
@@ -86,7 +85,7 @@ $VERSION = "1.02" ;
 	     UNRELIABLE_MESS
 	     RELIABLE_MESS
 	     FIFO_MESS
-	     CASUAL_MESS
+	     CAUSAL_MESS
 	     AGREED_MESS
 	     SAFE_MESS
 	     REGULAR_MESS
@@ -176,10 +175,10 @@ Spread - Perl extension for the Spread group communication system
   use Spread;
 
   # Connect
-  my($mailbox, $private_group) = Sread::connect(
+  my($mailbox, $private_group) = Spread::connect( {
 	spread_name => '4444@host.domain.com',
 	private_name => 'mrcool',
-	);
+	} );
 
   # Join and leave groups
   my(@group_to_join) = ( 'GroupA', 'GroupB', 'GroupC' );
@@ -197,9 +196,9 @@ Spread - Perl extension for the Spread group communication system
   else { print "Spread::poll $sperrno\n"; }
 
   # Receive messages (see spread's man pages for more description)
-  my($sevice_type, $sender, $groups, $mess_type, $endian, $message) =
+  my($service_type, $sender, $groups, $mess_type, $endian, $message) =
 	Spread::receive($mbox);
-  my($sevice_type, $sender, $groups, $mess_type, $endian, $message) =
+  my($service_type, $sender, $groups, $mess_type, $endian, $message) =
 	Spread::receive($mbox, 1.789);  # 1.789 second timeout on receive
 
   # Disconnect

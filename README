@@ -1,10 +1,10 @@
-Spread-3.15.2 Version 1.03
+Spread-3.15.2 Version 1.04
 =====================
 
 DESCRIPTION
 -----------
 
-Spread-3.15.2-1.03 is a Perl module that conveniently wraps the Spread C
+Spread-3.17.1-1.05 is a Perl module that conveniently wraps the Spread C
 libraries provided with the Spread 3.15.2 distribution.  Spread is available at
 http://www.spread.org/.  Spread is a local/wide area group communication
 toolkit that runs on most modern operating systems.  It allows convenient
@@ -13,6 +13,11 @@ as providing many more complicate assurances.
 
 CHANGES
 -------
+
+Version 3.17.1-1.05 fixes a service_type error (uninitialized variable)
+
+Version 3.15.2-1.04 adds a MANFIEST, dist to Makefile.PL, and several spelling
+corrections.  The only used code change was the spelling correction of CAUSAL.
 
 Version 3.15.2-1.03 updgrades the xs code to use the 3.15.2 Spread client
 libraries.
@@ -24,7 +29,7 @@ adds this "changes" section.
 PREREQUISITES
 -------------
 
-Spread-3.15.2-1.03 requires the Spread group communication toolkit daemon and
+Spread-3.15.2-1.04 requires the Spread group communication toolkit daemon and
 client C libraries (with headers) to be installed (or compiled) on the system.
 
 It will often not work correctly if there is an older libsp installed on the

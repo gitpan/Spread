@@ -1,9 +1,8 @@
 /* Filename: Spread.xs
  * Author:   Theo Schlossnagle <jesus@cnds.jhu.edu>
  * Created:  12th October 1999
- * Version:  1.03152
  *
- * Copyright (c) 1999 Theo Schlossnagle. All rights reserved.
+ * Copyright (c) 1999-2003 Theo Schlossnagle. All rights reserved.
  *   This program is free software; you can redistribute it and/or
  *   modify it under the same terms as Perl itself.
  *
@@ -65,7 +64,7 @@ static char *my_e_errmsg[] = {
 #ifdef MESSAGE_TOO_LONG
  "Message Too Long",	/* MESSAGE_TOO_LONG		-17 */
 #else
-#error You must install spread 3.15.2 client libraries to build perl Spread.
+#error You must install spread 3.17.0 client libraries to build perl Spread.
 #endif
  ""};
 static char *connect_params[] = {
@@ -660,7 +659,7 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
 	  static int oldmsize=0, newmsize=(1<<15); /* 65k */
 	  int i, mbox, endmis, ret, ngrps, msize;
 	  int16 mtype;
-	  service stype;
+	  service stype = 0;
 	  struct timeval towait;
 	  static char *groups=NULL;
 	  static char *mess=NULL;
@@ -742,7 +741,7 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
 	    }
 	    SENDER=sv_2mortal(newSVpv(sender, 0));
 	    STYPE=sv_2mortal(newSViv(stype));
-	    MTYPE=sv_2mortal(newSViv(stype));
+	    MTYPE=sv_2mortal(newSViv(mtype));
 	    ENDMIS=(endmis)?(&PL_sv_yes):(&PL_sv_no);
 	    MESSAGE=sv_2mortal(newSVpv(mess, msize));
 	  }
@@ -750,7 +749,7 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
           EXTEND(SP, 6);
           PUSHs(STYPE);
 	  PUSHs(SENDER);
-	  PUSHs (sv_2mortal(newRV((SV *)GROUPS)));
+	  PUSHs(sv_2mortal(newRV((SV *)GROUPS)));
 	  PUSHs(MTYPE);
 	  PUSHs(ENDMIS);
           PUSHs(MESSAGE);
