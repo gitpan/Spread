@@ -1,11 +1,11 @@
-Spread-3.12 Version 1.01
-=====================
+Spread-3.14 Version 1.02
+========================
 
 DESCRIPTION
 -----------
 
-Spread-3.12-1.01 is a Perl module that conveniently wraps the Spread C libraries
-provided with the Spread 3.12 distribution.  Spread is available at
+Spread-3.14-1.02 is a Perl module that conveniently wraps the Spread C libraries
+provided with the Spread 3.14 distribution.  Spread is available at
 http://www.spread.org/.  Spread is a local/wide area group communication
 toolkit that runs on most modern operating systems.  It allows convenient
 mechanisms for reliable multicasting information between applications as well
@@ -14,7 +14,7 @@ as providing many more complicate assurances.
 PREREQUISITES
 -------------
 
-Spread-3.12-1.01 requires the Spread group communication toolkit daemon and
+Spread-3.14-1.02 requires the Spread group communication toolkit daemon and
 client C libraries (with headers) to be installed (or compiled) on the system.
 
 It also request Perl 5.

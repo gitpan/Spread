@@ -59,7 +59,9 @@ static char *my_e_errmsg[] = {
  "Illegal Message",	/* ILLEGAL_MESSAGE		-13 */
  "Illegal Group",	/* ILLEGAL_GROUP		-14 */
  "Buffer Too Short",	/* BUFFER_TOO_SHORT		-15 */
+#ifdef GROUP_TOO_SHORT
  "Groups Too Short",	/* GROUPS_TOO_SHORT		-16 */
+#endif
  ""};
 static char *connect_params[] = {
 	"spread_name",
@@ -463,10 +465,10 @@ GC_disconnect(svmbox)
 	{
 	  int mbox = SvIV(svmbox);
 	  if((mbox = SP_disconnect(mbox))==0)
-	    RETVAL = &sv_yes;
+	    RETVAL = &PL_sv_yes;
 	  else {
 	    SetSpErrorNo(mbox);
-	    RETVAL = &sv_no;
+	    RETVAL = &PL_sv_no;
 	  }
 	}
 	OUTPUT:
@@ -483,7 +485,7 @@ GC_connect_i(rv)
 	  char *sn, *pn, pg[MAX_GROUP_NAME];
 	  HV *hv;
 	PPCODE:
-	  MAILBOX = PRIVATE_GROUP = &sv_undef;
+	  MAILBOX = PRIVATE_GROUP = &PL_sv_undef;
 	  if(!SvROK(rv) || SvTYPE(hv = (HV *)SvRV(rv))!=SVt_PVHV)
 	    croak("not a HASH reference");
 	  for(i=0;i<nconnect_params;i++)
@@ -495,10 +497,10 @@ GC_connect_i(rv)
 	  i=0;
 	  afetch = hv_fetch(hv, connect_params[i],
 		strlen(connect_params[i]), FALSE); i++;
-	  sn = SvPV(*afetch, na);
+	  sn = SvPV(*afetch, PL_na);
 	  afetch = hv_fetch(hv, connect_params[i],
 		strlen(connect_params[i]), FALSE); i++;
-	  pn = SvPV(*afetch, na);
+	  pn = SvPV(*afetch, PL_na);
 	  afetch = hv_fetch(hv, connect_params[i],
 		strlen(connect_params[i]), FALSE); i++;
 	  pr = SvIV(*afetch);
@@ -524,10 +526,10 @@ GC_join(svmbox, group_name)
 	{
 	  int mbox = SvIV(svmbox);
 	  if((mbox = SP_join(mbox, group_name))==0) {
-	    RETVAL = &sv_yes;
+	    RETVAL = &PL_sv_yes;
 	  } else {
 	    SetSpErrorNo(mbox);
-	    RETVAL = &sv_no;
+	    RETVAL = &PL_sv_no;
 	  }
 	}
 	OUTPUT:
@@ -541,10 +543,10 @@ GC_leave(svmbox, group_name)
 	{
 	  int mbox = SvIV(svmbox);
 	  if((mbox = SP_leave(mbox, group_name))==0) {
-	    RETVAL = &sv_yes;
+	    RETVAL = &PL_sv_yes;
 	  } else {
 	    SetSpErrorNo(mbox);
-	    RETVAL = &sv_no;
+	    RETVAL = &PL_sv_no;
 	  }
 	}
 	OUTPUT:
@@ -569,7 +571,7 @@ GC_multicast(svmbox, stype, svgroups, mtype, mess)
 	/* It is OK to use NULL.. We only see this, it isn't returned */
 	  AV * groups = (AV *)NULL;
 	  SV * group = (SV *)NULL;
-	  RETVAL = &sv_undef;
+	  RETVAL = &PL_sv_undef;
 	  if(SvROK(svgroups)) {
 	    if(SvTYPE(groups = (AV *)SvRV(svgroups))==SVt_PVAV) {
 	      ngroups = av_len(groups)+1;
@@ -591,11 +593,11 @@ GC_multicast(svmbox, stype, svgroups, mtype, mess)
 			MIN(MAX_GROUP_NAME,slength));
 	      }
 	    } else if(SvTYPE(group = SvRV(svgroups))==SVt_PV) {
-	      groupname = SvPV(group, na);
+	      groupname = SvPV(group, PL_na);
 	    } else {
 	      croak("not a SCALAR or ARRAY reference.");
 	    }
-	  } else if(groupname=SvPV(svgroups, na)) {
+	  } else if(groupname=SvPV(svgroups, PL_na)) {
 	    group = svgroups;
 	  } else {
 	    SetSpErrorNo(ARGS_INSUFF);
@@ -628,7 +630,7 @@ GC_multicast(svmbox, stype, svgroups, mtype, mess)
 	  RETVAL
 
 AV *
-GC_receive(svmbox, svtimeout=&sv_undef)
+GC_receive(svmbox, svtimeout=&PL_sv_undef)
 	SV * svmbox
 	SV * svtimeout
 	PREINIT:
@@ -642,16 +644,16 @@ GC_receive(svmbox, svtimeout=&sv_undef)
 	  static char *mess=NULL;
 	  char sender[MAX_GROUP_NAME];
 	  SV *STYPE, *MTYPE, *MESSAGE, *SENDER, *ENDMIS, *ERROR;
-	  AV *GROUPS=(AV *)&sv_undef;
+	  AV *GROUPS=(AV *)&PL_sv_undef;
 	PPCODE:
-	  if(svmbox == &sv_undef) {
-	    STYPE=SENDER=MTYPE=ENDMIS=MESSAGE=&sv_undef;
+	  if(svmbox == &PL_sv_undef) {
+	    STYPE=SENDER=MTYPE=ENDMIS=MESSAGE=&PL_sv_undef;
 	    SetSpErrorNo(ILLEGAL_SESSION);
 	    goto rec_ending;
 	  }
 	  mbox = SvIV(svmbox);
-	  ERROR=&sv_undef;
-	  if(svtimeout != &sv_undef) {
+	  ERROR=&PL_sv_undef;
+	  if(svtimeout != &PL_sv_undef) {
 	    double timeout;
 	    fd_set readfs;
 	    towait.tv_sec = 0L;
@@ -662,7 +664,7 @@ GC_receive(svmbox, svtimeout=&sv_undef)
 	      (unsigned long)(1000000.0*(timeout-(double)towait.tv_sec));
 	    FD_ZERO(&readfs); FD_SET(mbox, &readfs);
 	    if((ret = select(mbox+1, &readfs, NULL, &readfs, &towait))!=1) {
-	      STYPE=SENDER=MTYPE=ENDMIS=MESSAGE=&sv_undef;
+	      STYPE=SENDER=MTYPE=ENDMIS=MESSAGE=&PL_sv_undef;
 	      SetSpErrorNo(SELECT_TIMEOUT);
 	      goto rec_ending;
 	    }
@@ -691,13 +693,15 @@ GC_receive(svmbox, svtimeout=&sv_undef)
 		  ERROR = sv_2mortal(newSViv(BUFFER_TOO_SHORT));
 		  msize = oldmsize;
 		  goto try_again;
+#ifdef GROUPS_TOO_SHORT
 		} else if (ret==GROUPS_TOO_SHORT) {
 		  newgsize=--ngrps;
 		  ERROR = sv_2mortal(newSViv(GROUPS_TOO_SHORT));
 		  ngrps = oldgsize;
 		  goto try_again;
+#endif
 		} else {
-		  STYPE=SENDER=MTYPE=ENDMIS=MESSAGE=&sv_undef;
+		  STYPE=SENDER=MTYPE=ENDMIS=MESSAGE=&PL_sv_undef;
 		  SetSpErrorNo(ret);
 		}
 	  } else {
@@ -717,7 +721,7 @@ GC_receive(svmbox, svtimeout=&sv_undef)
 	    SENDER=sv_2mortal(newSVpv(sender, 0));
 	    STYPE=sv_2mortal(newSViv(stype));
 	    MTYPE=sv_2mortal(newSViv(stype));
-	    ENDMIS=(endmis)?(&sv_yes):(&sv_no);
+	    ENDMIS=(endmis)?(&PL_sv_yes):(&PL_sv_no);
 	    MESSAGE=sv_2mortal(newSVpv(mess, msize));
 	  }
 	rec_ending:
@@ -738,7 +742,7 @@ GC_poll(svmbox)
 	  mbox = SP_poll(mbox);
 	  if(mbox<0) {
 	    SetSpErrorNo(mbox);
-	    RETVAL = &sv_undef;
+	    RETVAL = &PL_sv_undef;
 	  } else {
 	    RETVAL = newSViv(mbox);
 	  }
