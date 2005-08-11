@@ -36,9 +36,12 @@
 
 
 #define SPERRNO "Spread::sperrno"
+#define MAX_ERRMSG     4
+#define SELECT_FAILED  4
 #define SELECT_TIMEOUT 3
 #define ARGS_INSUFF 2
 static char *my_e_errmsg[] = {
+ "Select Failed",       /* SELECT_FAILED        4 */
  "Select Timed Out",	/* SELECT_TIMEOUT		3 */
  "Insufficient Arguments", /* ARGS_INSUFF		2 */
  "Accept Session",	/* ACCEPT_SESSION		1 */
@@ -428,7 +431,7 @@ int error_no ;
 	char * errstr ;
 	SV * sperror_sv = perl_get_sv(SPERRNO, FALSE);
 
-	errstr = (char *) my_e_errmsg[3 - error_no];
+	errstr = (char *) my_e_errmsg[MAX_ERRMSG - error_no];
 	if (SvIV(sperror_sv) != error_no) {
 	  sv_setiv(sperror_sv, error_no) ;
 	  sv_setpv(sperror_sv, errstr) ;
@@ -686,7 +689,7 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
 	    FD_ZERO(&readfs); FD_SET(mbox, &readfs);
 	    if((ret = select(mbox+1, &readfs, NULL, &readfs, &towait))!=1) {
 	      STYPE=SENDER=MTYPE=ENDMIS=MESSAGE=&PL_sv_undef;
-	      SetSpErrorNo(SELECT_TIMEOUT);
+	      SetSpErrorNo( ret == 0 ? SELECT_TIMEOUT : SELECT_FAILED );
 	      goto rec_ending;
 	    }
 	  }
