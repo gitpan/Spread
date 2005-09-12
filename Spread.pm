@@ -19,7 +19,7 @@ use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $AUTOLOAD);
 
-$VERSION = "3.17.3-1.06" ;
+$VERSION = "3.17.3-1.07" ;
 
 *SP_connect = \&Spread::connect;
 *SP_disconnect = \&Spread::disconnect;
@@ -70,7 +70,7 @@ $VERSION = "3.17.3-1.06" ;
 			      REJECT_QUOTA
 			      REJECT_VERSION) ],
 		SP => [ qw(SP_connect
-			   SP_disconnecct
+			   SP_disconnect
 			   SP_join
 			   SP_leave
 			   SP_receive
@@ -119,7 +119,7 @@ $VERSION = "3.17.3-1.06" ;
 	     REJECT_VERSION
 	     
 	     SP_connect
-	     SP_disconnecct
+	     SP_disconnect
 	     SP_join
 	     SP_leave
 	     SP_receive
@@ -175,7 +175,7 @@ Spread - Perl extension for the Spread group communication system
   use Spread;
 
   # Connect
-  my($mailbox, $private_group) = Spread::connect( {
+  my($mbox, $private_group) = Spread::connect( {
 	spread_name => '4444@host.domain.com',
 	private_name => 'mrcool',
 	} );

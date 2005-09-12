@@ -1,10 +1,10 @@
-Spread-3.15.2 Version 1.04
+Spread-3.17.3 Version 1.07
 =====================
 
 DESCRIPTION
 -----------
 
-Spread-3.17.3-1.06 is a Perl module that conveniently wraps the Spread C
+Spread-3.17.3-1.07 is a Perl module that conveniently wraps the Spread C
 libraries provided with the Spread 3.17.3 distribution.  Spread is available at
 http://www.spread.org/.  Spread is a local/wide area group communication
 toolkit that runs on most modern operating systems.  It allows convenient
@@ -13,6 +13,8 @@ as providing many more complicate assurances.
 
 CHANGES
 -------
+
+Version 3.17.3-1.07 fix man pages and exports.
 
 Version 3.17.3-1.06 differentiate between select timeout and other failures.
 Thanks to Matt Sergeant.
