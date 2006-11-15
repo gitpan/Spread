@@ -1,10 +1,10 @@
-Spread-3.17.3 Version 1.07
+Spread-3.17.3 Version 108
 =====================
 
 DESCRIPTION
 -----------
 
-Spread-3.17.3-1.07 is a Perl module that conveniently wraps the Spread C
+Spread-3.17.3_108 is a Perl module that conveniently wraps the Spread C
 libraries provided with the Spread 3.17.3 distribution.  Spread is available at
 http://www.spread.org/.  Spread is a local/wide area group communication
 toolkit that runs on most modern operating systems.  It allows convenient
@@ -13,6 +13,8 @@ as providing many more complicate assurances.
 
 CHANGES
 -------
+
+Version 3.17.3_108 fix version to make MakeMaker happier.
 
 Version 3.17.3-1.07 fix man pages and exports.
 
@@ -40,7 +42,7 @@ client C libraries (with headers) to be installed (or compiled) on the system.
 It will often not work correctly if there is an older libsp installed on the
 system.
 
-It also request Perl 5.
+It also requires Perl 5.
 
 INSTALLATION
 ------------
@@ -53,7 +55,7 @@ INSTALLATION
 COPYRIGHT AND DISCLAIMER
 ------------------------
 
-Copyright (c) 2000-2005 Theo Schlossnagle <jesus@cnds.jhu.edu>
+Copyright (c) 2000-2006 Theo Schlossnagle <jesus@cnds.jhu.edu>
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
