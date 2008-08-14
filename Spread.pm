@@ -2,7 +2,7 @@
 # Author:   Theo Schlossnagle <jesus@cnds.jhu.edu>
 # Created:  12th October 1999
 #
-# Copyright (c) 1999-2006 Theo Schlossnagle. All rights reserved.
+# Copyright (c) 1999-2006,2008 Theo Schlossnagle. All rights reserved.
 #   This program is free software; you can redistribute it and/or
 #   modify it under the same terms as Perl itself.
 #
@@ -19,7 +19,7 @@ use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $AUTOLOAD);
 
-$VERSION = "3.17.3_108" ;
+$VERSION = "3.17.4.1" ;
 
 *SP_connect = \&Spread::connect;
 *SP_disconnect = \&Spread::disconnect;
@@ -51,7 +51,8 @@ $VERSION = "3.17.3_108" ;
 			     CAUSED_BY_LEAVE
 			     CAUSED_BY_DISCONNECT
 			     CAUSED_BY_NETWORK
-			     MEMBERSHIP_MESS) ],
+			     MEMBERSHIP_MESS
+			     REJECT_MESS) ],
 		ERROR => [ qw($sperrno
 			      ACCEPT_SESSION
 			      ILLEGAL_GROUP
@@ -100,6 +101,7 @@ $VERSION = "3.17.3_108" ;
 	     CAUSED_BY_DISCONNECT
 	     CAUSED_BY_NETWORK
 	     MEMBERSHIP_MESS
+	     REJECT_MESS
 	     
 	     ACCEPT_SESSION
 	     ILLEGAL_GROUP
@@ -267,6 +269,7 @@ All constants in alphabetical order:
   REGULAR_MESS
   REG_MEMB_MESS
   REJECT_ILLEGAL_NAME
+  REJECT_MESS
   REJECT_NOT_UNIQUE
   REJECT_NO_NAME
   REJECT_QUOTA

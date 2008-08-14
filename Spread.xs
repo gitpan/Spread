@@ -2,7 +2,7 @@
  * Author:   Theo Schlossnagle <jesus@cnds.jhu.edu>
  * Created:  12th October 1999
  *
- * Copyright (c) 1999-2006 Theo Schlossnagle. All rights reserved.
+ * Copyright (c) 1999-2006,2008 Theo Schlossnagle. All rights reserved.
  *   This program is free software; you can redistribute it and/or
  *   modify it under the same terms as Perl itself.
  *
@@ -289,6 +289,12 @@ int arg;
         if (strEQ(name, "REJECT_ILLEGAL_NAME"))
 #ifdef REJECT_ILLEGAL_NAME
             return REJECT_ILLEGAL_NAME;
+#else
+            goto not_there;
+#endif
+        if (strEQ(name, "REJECT_MESS"))
+#ifdef REJECT_MESS
+            return REJECT_MESS;
 #else
             goto not_there;
 #endif
