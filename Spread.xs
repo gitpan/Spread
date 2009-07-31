@@ -54,20 +54,20 @@ static char *my_e_errmsg[] = {
  "Reject: Not Unique",	/* REJECT_NOT_UNIQUE		-6 */
  "Reject: Version",	/* REJECT_VERSION		-7 */
  "Connection Closed",	/* CONNECTION_CLOSED		-8 */
- ""		,	/*				-9 */
+ "Reject: Auth",	/* REJECT_AUTH			-9 */
  ""		,	/*				-10 */
  "Illegal Session",	/* ILLEGAL_SESSION		-11 */
  "Illegal Service",	/* ILLEGAL_SERVICE		-12 */
  "Illegal Message",	/* ILLEGAL_MESSAGE		-13 */
  "Illegal Group",	/* ILLEGAL_GROUP		-14 */
  "Buffer Too Short",	/* BUFFER_TOO_SHORT		-15 */
-#ifdef GROUP_TOO_SHORT
+#ifdef GROUPS_TOO_SHORT
  "Groups Too Short",	/* GROUPS_TOO_SHORT		-16 */
 #endif
 #ifdef MESSAGE_TOO_LONG
  "Message Too Long",	/* MESSAGE_TOO_LONG		-17 */
 #else
-#error You must install spread 3.17.0 client libraries to build perl Spread.
+#error You must install spread client libraries to build perl Spread.
 #endif
  ""};
 static char *connect_params[] = {
@@ -283,6 +283,12 @@ int arg;
         if (strEQ(name, "REG_MEMB_MESS"))
 #ifdef REG_MEMB_MESS
             return REG_MEMB_MESS;
+#else
+            goto not_there;
+#endif
+        if (strEQ(name, "REJECT_AUTH"))
+#ifdef REJECT_AUTH
+            return REJECT_AUTH;
 #else
             goto not_there;
 #endif
@@ -725,7 +731,7 @@ GC_receive(svmbox, svtimeout=&PL_sv_undef)
 		  goto try_again;
 #ifdef GROUPS_TOO_SHORT
 		} else if (ret==GROUPS_TOO_SHORT) {
-		  newgsize=--ngrps;
+		  newgsize=-ngrps;
 		  ERROR = newSViv(GROUPS_TOO_SHORT);
 		  ngrps = oldgsize;
 		  goto try_again;

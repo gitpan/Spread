@@ -19,7 +19,7 @@ use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $AUTOLOAD);
 
-$VERSION = "3.17.4.1" ;
+$VERSION = "3.17.4.2" ;
 
 *SP_connect = \&Spread::connect;
 *SP_disconnect = \&Spread::disconnect;
