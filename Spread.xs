@@ -474,7 +474,7 @@ BOOT:
 	if(SP_version(&major, &minor, &patch) <= 0 ||
 	   major<3 || (major==3 && minor<15) ||
 	   (major==3 && minor==15 && patch<1))
-	  croak(SPversionstr()) ; 
+	  croak("%s", SPversionstr()) ; 
 
 	{
 	  SV * sperror_sv = perl_get_sv(SPERRNO, GV_ADDMULTI) ;

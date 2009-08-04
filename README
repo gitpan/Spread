@@ -1,10 +1,10 @@
-Spread-3.17.4.2
+Spread-3.17.4.3
 =====================
 
 DESCRIPTION
 -----------
 
-Spread-3.17.4.2 is a Perl module that conveniently wraps the Spread C
+Spread-3.17.4.3 is a Perl module that conveniently wraps the Spread C
 libraries provided with the Spread 3.17.4 distribution.  Spread is available at
 http://www.spread.org/.  Spread is a local/wide area group communication
 toolkit that runs on most modern operating systems.  It allows convenient
@@ -13,6 +13,9 @@ as providing many more complicate assurances.
 
 CHANGES
 -------
+
+Version 3.17.4.3 fixes an unsafe pass of the spread version string as a
+printf format string.  Thanks Jerome Quelin.
 
 Version 3.17.4.2 fix typo in receive that prevented receiving messages
 spent to more than 64 groups.  Also adds REJECT_AUTH error code.
