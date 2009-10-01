@@ -601,7 +601,8 @@ GC_multicast(svmbox, stype, svgroups, mtype, mess)
 	CODE:
 	{
 	  int mbox = SvIV(svmbox);
-	  int mlength, i, ret, ngroups=0;
+	  int i, ret, ngroups=0;
+          size_t mlength;
 	  char *groupname;
 	  char *message;
 	/* It is OK to use NULL.. We only see this, it isn't returned */
@@ -621,12 +622,12 @@ GC_multicast(svmbox, stype, svgroups, mtype, mess)
 	      }
 	      for(i=0;i<ngroups;i++) {
 		char *string;
-		int slength;
+		size_t slength;
 		SV **afetch = av_fetch(groups, i, FALSE);
 		string = SvPV(*afetch, slength);
 		strncpy(&groupnames[i*MAX_GROUP_NAME],
 			string,
-			MIN(MAX_GROUP_NAME,slength));
+			MAX_GROUP_NAME);
 	      }
 	    } else if(SvTYPE(group = SvRV(svgroups))==SVt_PV) {
 	      groupname = SvPV(group, PL_na);

@@ -19,7 +19,7 @@ use Carp;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $AUTOLOAD);
 
-$VERSION = "3.17.4.3" ;
+$VERSION = "3.17.4.4" ;
 
 *SP_connect = \&Spread::connect;
 *SP_disconnect = \&Spread::disconnect;
@@ -166,8 +166,6 @@ sub connect {
 1;
 __END__
 
-# Below is the stub of documentation for your module. You better edit it!
-
 =head1 NAME
 
 Spread - Perl extension for the Spread group communication system
@@ -182,10 +180,16 @@ Spread - Perl extension for the Spread group communication system
 	private_name => 'mrcool',
 	} );
 
+  # If you don't give a private name, you'll get a unique name from the spread daemon.
+  my($mailbox, $private_group) = Spread::connect(
+    spread_name => '4444@host.domain.com',
+  );
+
+
   # Join and leave groups
   my(@group_to_join) = ( 'GroupA', 'GroupB', 'GroupC' );
   my(@joined_groups) = grep( Spread::join($mbox, $_), @group_to_join );
-  print "Spread::join -- $sperrorno"
+  print "Spread::join -- $sperrno"
   	unless (Spread::leave($mbox, 'GroupC'));
 
   # Multicast to group(s)
@@ -205,7 +209,7 @@ Spread - Perl extension for the Spread group communication system
 
   # Disconnect
   if(Spread::disconnect($mbox)) { print "Successful disconnect\n"; }
-  else { print "Spread::disconnect -- $sperrorno\n"; }
+  else { print "Spread::disconnect -- $sperrno\n"; }
 
 =head1 DESCRIPTION
 
@@ -214,8 +218,8 @@ Understanding through practice ;)
 See man pages for SP_connect, SP_join, SP_multicast, SP_receive,
 SP_poll, SP_error, SP_leave, SP_disconnect.
 
-$sperror holds either the integer spread error or a descriptive string
-depending on the context in which $sperror is used.
+$sperrno holds either the integer spread error or a descriptive string
+depending on the context in which $sperrno is used.
 
 =head1 Exported constants
 
